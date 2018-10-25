@@ -7,7 +7,6 @@
 #include <cmath>
 #include <chrono>
 #include <cstdlib>
-
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -70,17 +69,17 @@ int main(int argc, char *argv[]) {
     cv::cvtColor(mat, gray, CV_BGR2GRAY);
 
     auto start_cpu =  chrono::high_resolution_clock::now();
-    equalizer(gray, out);
+    equalWrapper(gray, out);
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
     printf("Elapsed time: %f ms\n", duration_ms.count());
 
     // Display images
-    namedWindow("Input", cv::WINDOW_NORMAL);
-    namedWindow("Output", cv::WINDOW_NORMAL);
-    imshow("Input", mat);
-    imshow("Output", out);
-    cv::waitKey();
+    /* namedWindow("Input", cv::WINDOW_NORMAL); */
+    /* namedWindow("Output", cv::WINDOW_NORMAL); */
+    /* imshow("Input", mat); */
+    /* imshow("Output", out); */
+    /* cv::waitKey(); */
 
     return 0;
 }
