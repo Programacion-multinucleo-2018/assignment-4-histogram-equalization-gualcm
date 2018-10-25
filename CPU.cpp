@@ -75,11 +75,11 @@ int main(int argc, char *argv[]) {
     printf("Elapsed time: %f ms\n", duration_ms.count());
 
     // Display images
-    /* namedWindow("Input", cv::WINDOW_NORMAL); */
-    /* namedWindow("Output", cv::WINDOW_NORMAL); */
-    /* imshow("Input", mat); */
-    /* imshow("Output", out); */
-    /* cv::waitKey(); */
+    namedWindow("Input", cv::WINDOW_NORMAL);
+    namedWindow("Output", cv::WINDOW_NORMAL);
+    imshow("Input", mat);
+    imshow("Output", out);
+    cv::waitKey();
 
     return 0;
 }

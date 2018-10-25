@@ -24,3 +24,8 @@ Rubric:
 5. For the GPU version, used shared memory where necessary.
 6. Both images are displayed at the end.
 7. Calculation times and speedup obtained are incuded in the Readme.
+
+Results:
+CPU elapsed time: 237.283356 ms
+GPU elapsed time: 70.610146 ms
+Speedup = 237.283356 / 70.610146 = The GPU is 3.3604711142 times faster

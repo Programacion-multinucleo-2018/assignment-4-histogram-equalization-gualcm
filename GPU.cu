@@ -123,11 +123,11 @@ int main(int argc, char *argv[]) {
     printf("Elapsed time: %f ms\nBlock size (%d, %d)\n", duration_ms.count(), blockSize, blockSize);
 
     // Display images
-    /* namedWindow("Input", cv::WINDOW_NORMAL); */
-    /* namedWindow("Output", cv::WINDOW_NORMAL); */
-    /* imshow("Input", gray); */
-    /* imshow("Output", out); */
-    /* cv::waitKey(); */
+    namedWindow("Input", cv::WINDOW_NORMAL);
+    namedWindow("Output", cv::WINDOW_NORMAL);
+    imshow("Input", gray);
+    imshow("Output", out);
+    cv::waitKey();
 
     return 0;
 }
