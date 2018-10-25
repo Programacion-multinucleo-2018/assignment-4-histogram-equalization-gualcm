@@ -28,7 +28,7 @@ __global__ void generateHist(unsigned char* mat, int cols, int rows, int colorWi
     int tid = iy * colorWidthStep + ix;
     int size = 256;
 
-    __shared__ int _hist[size];
+    __shared__ int _hist[256];
 
     if (ixy < size) {
         _hist[ixy] = 0;
@@ -52,7 +52,7 @@ __global__ void normal(int *hist) {
     int ixy = threadIdx.x + threadIdx.y * blockDim.x;
     int size = 256;
 
-    __shared__ int _hist[size];
+    __shared__ int _hist[256];
 
     if(ixy < size && blockIdx.x == 0 && blockIdx.y == 0) {
         _hist[ixy] = 0;
@@ -69,26 +69,26 @@ void equalWrapper(cv::Mat& mat, cv::Mat& out) {
     int *hist;
     int blockSize = 32;
     unsigned char *d_mat, *d_out;
-    float graySize = mat.rows * mat.cols;
+    /* float graySize = mat.rows * mat.cols; */
     size_t histB = sizeof(int) * 256;
     size_t grayB = out.step * out.rows;
 
     // Allocate device memory
-    SAFE_CALL(cudaMalloc<unsigned char>(&mat, grayB), "CUDA Malloc Failed");
-    SAFE_CALL(cudaMalloc<unsigned char>(&out, grayB), "CUDA Malloc Failed");
+    SAFE_CALL(cudaMalloc<unsigned char>(&d_mat, grayB), "CUDA Malloc Failed");
+    SAFE_CALL(cudaMalloc<unsigned char>(&d_out, grayB), "CUDA Malloc Failed");
     SAFE_CALL(cudaMalloc(&hist, histB), "CUDA Malloc failed");
 
     // Copy data from host to device
     SAFE_CALL(cudaMemcpy(d_mat, mat.ptr(), grayB, cudaMemcpyHostToDevice), "CUDA Memcpy Host To Device Failed");
     SAFE_CALL(cudaMemcpy(d_out, out.ptr(), grayB, cudaMemcpyHostToDevice), "CUDA Memcpy Host To Device Failed");
 
-    int gridX = ceil((float)input.cols / block.x);
-    int gridY = ceil((float)input.rows/ block.y);
+    const dim3 block(blockSize, blockSize);
+    int gridX = ceil((float)mat.cols / block.x);
+    int gridY = ceil((float)mat.rows/ block.y);
     const dim3 grid(gridX, gridY);
-    const dim3 = (blockSize, blockSize);
 
     generateHist <<<grid, block>>>(d_mat, mat.cols, mat.rows, mat.step, hist);
-    normal <<<grid, block>>>(h_s);
+    normal <<<grid, block>>>(hist);
     equal <<<grid, block >>>(d_mat, d_out, mat.cols, mat.rows, mat.step, hist);
 
     SAFE_CALL(cudaDeviceSynchronize(), "Kernel Launch Failed");
@@ -104,6 +104,8 @@ void equalWrapper(cv::Mat& mat, cv::Mat& out) {
 
 // Same main as the CPU version
 int main(int argc, char *argv[]) {
+    int blockSize = 32;
+
     // Load image
     string imagePath = "Images/dog2.jpeg";
     cv::Mat mat = cv::imread(imagePath, CV_LOAD_IMAGE_COLOR);
@@ -118,7 +120,7 @@ int main(int argc, char *argv[]) {
     equalWrapper(gray, out);
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
-    printf("Elapsed time: %f ms\nBlock size (%d, %d)\n", duration_ms.count(), xBlock, yBlock);
+    printf("Elapsed time: %f ms\nBlock size (%d, %d)\n", duration_ms.count(), blockSize, blockSize);
 
     // Display images
     /* namedWindow("Input", cv::WINDOW_NORMAL); */
