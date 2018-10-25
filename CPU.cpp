@@ -1,6 +1,6 @@
 // Gualberto Casas
 // A00942270
-// g++ -o CPU CPU.cpp -lopencv_core -lopencv_highgui -lopencv_imgproc -std=c++11
+// g++ -o CPU CPU.cpp -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -std=c++11
 
 #include <iostream>
 #include <cstdio>
