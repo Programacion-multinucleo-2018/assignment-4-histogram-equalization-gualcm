@@ -25,6 +25,13 @@ Rubric:
 6. Both images are displayed at the end.
 7. Calculation times and speedup obtained are incuded in the Readme.
 
+**NOTES**
+
+1. The histogram calculation will most likely be wrong because you are not using sync threads correctly.
+2. The algorithm is incorrect for the normalization step.
+
+**Grade: 85**
+
 Results:
 CPU elapsed time: 237.283356 ms
 GPU elapsed time: 70.610146 ms

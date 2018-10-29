@@ -104,7 +104,7 @@ void equalWrapper(cv::Mat& mat, cv::Mat& out) {
 
 // Same main as the CPU version
 int main(int argc, char *argv[]) {
-    int blockSize = 32;
+    int blockSize = 16;
 
     // Load image
     string imagePath = "Images/dog2.jpeg";
@@ -125,6 +125,9 @@ int main(int argc, char *argv[]) {
     // Display images
     namedWindow("Input", cv::WINDOW_NORMAL);
     namedWindow("Output", cv::WINDOW_NORMAL);
+
+    cv::resizeWindow("Input", 800, 600);
+    cv::resizeWindow("Output", 800, 600);
     imshow("Input", gray);
     imshow("Output", out);
     cv::waitKey();
